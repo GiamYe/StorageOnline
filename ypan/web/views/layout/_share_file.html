@@ -1,0 +1,170 @@
+                <!-- .modal -->
+                <div id="shareFile" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title" id="myModalLabel">分享</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="panel-body">
+                                    <div class="col-md-6">
+                                        <select id="fileselect" class="form-control">
+                                        <option id="ffop" value="0">所有</option>
+                                        </select>
+                                    </div>
+                                    <div style="overflow:scroll;height:400px">
+                                    <table id="fileUser" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>用户名</th>
+                                                <th>邮箱</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr id="filerow">
+                                                <td>
+                                                <div class="checkbox" style="margin: 0;">
+                                                    <label>
+                                                <input type="checkbox" value="" class="px">
+                                                <span id="name" class="lbl"></span>
+                                                    </label>
+                                                </div>
+                                                </td>
+                                                <td id="email">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                    <table id="fileselectTable" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>用户</th>
+                                                <th>邮箱</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr id="sltfilerow">
+                                                <td>
+                                                <div class="checkbox" style="margin: 0;">
+                                                    <label>
+                                                <input type="checkbox" value="" class="px">
+                                                <span id="name" class="lbl"></span>
+                                                    </label>
+                                                </div>
+                                                </td>
+                                                <td id="email">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                </div>
+                            </div> <!-- / .modal-body -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button id="btn_share_file" class="btn btn-primary">分享</button>
+                            </div>
+                        </div> <!-- / .modal-content -->
+                    </div> <!-- / .modal-dialog -->
+                </div> <!-- /.modal -->
+<script type="text/javascript" charset="utf-8">
+var fid;
+$(document).on("click", ".fileshare", function(){
+    console.log("come in");
+    fid = $(this).parent().parent().parent().parent().parent().find("td:eq(0)").html();
+    $("#fileselect option:gt(0)").remove();
+    $("#fileselectTable").hide();
+    $.ajax({
+        url:"/userlist/",
+        type: "GET",
+        dataType: "json",
+        data: {},
+        success: function(result){
+            console.log(result);
+            arr = eval(result);
+
+            $.each(result, function(i, user){
+                console.log(user.name);
+                var row = $("#filerow").clone();
+                row.find("#name").text(user.name);
+                row.find("#email").text(user.email);
+                row.find("input").val(user.id);
+                row.attr("id","ready");
+                row.appendTo("#fileUser");
+            });
+            $("#filerow").remove();
+        }
+    });
+    $.ajax({
+        url:"/grouplist",
+        type: "GET",
+        dataType: "json",
+        data: {},
+        success: function(result){
+            console.log(result);
+            $.each(result, function(i, group){
+                var fop = $("#ffop").clone();
+                fop.text(group.name);
+                fop.val(group.id);
+                fop.attr("id","ready");
+                fop.appendTo("#fileselect");
+            });
+            // $("#fop").remove();
+        }
+    });
+});
+
+$(document).on("change", "#fileselect", function(){
+    console.log("change");
+    var group_id = $(this).val();
+    var tr = ""
+    $("#fileUser").hide();
+    $("#fileselectTable").show();
+    $("#sltfilerow").show();
+    $('#fileselectTable tr:gt(1)').remove()
+    console.log(group_id);
+    $.ajax({
+        url:"/getgroup/",
+        type: "POST",
+        dataType: "json",
+        data: {"group_id":group_id},
+        success: function(result){
+            console.log(result);
+            $.each(result, function(i, user){
+                console.log(user.name);
+                var row = $("#sltfilerow").clone();
+                row.find("#name").text(user.name);
+                row.find("#email").text(user.email);
+                row.find("input").val(user.id);
+                row.attr("id","ready");
+                row.appendTo("#fileselectTable");
+            });
+            $("#sltfilerow").hide();
+        }
+    });
+
+});
+
+$(document).on("click", "#btn_share_file", function(){
+    var ids = "";
+    var i=0;
+    $("input:checked").each(function(){
+        ids = ids + $(this).val()+",";
+    });
+    $.ajax({
+        url: "/shareFile/",
+        type: "POST",
+        dataType: "json",
+        data: {"user_ids":ids, "file_id":fid},
+        success: function(result){
+            $("#shareFile").modal('hide');
+        }
+    });
+});
+
+
+</script>
+
+

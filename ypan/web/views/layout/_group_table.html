@@ -1,0 +1,39 @@
+    {% include "layout/_add_user.html" %}
+    <div style="overflow:scroll;height:500px">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>组名</th>
+                    <th>用户</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for group in groups  %}
+                <tr>
+                    <td>{{group.id}}</td>
+                    <td>{{group.name}}</td>
+                    <td>
+                        <div class="col-md-6">
+                            <select id="uidemo-modals-effects-select" class="form-control">
+                                {% for u in group.users %}
+                                <option value="bounce">{{u}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-success dropdown-toggle" data-toggle="dropdown">Operation&nbsp;<i class="fa fa-caret-down"></i></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" class="adduser" data-toggle="modal" data-target="#usermodal">添加用户</a></li>
+                                <li><a href="{% url 'disk:deleteGroup' group.id %}">删除</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>

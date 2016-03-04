@@ -1,0 +1,12 @@
+.copyright-version {
+  position: absolute;
+  left: 0;
+  bottom: 5px;
+  z-index: 9999;
+  width: 240px;
+  color: #fff;
+  opacity: 0.6;
+}
+#menu-content-demo {
+  padding-left: 20px !important;
+}

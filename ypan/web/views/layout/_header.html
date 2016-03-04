@@ -1,0 +1,41 @@
+<div id="main-navbar" class="navbar navbar-inverse" role="navigation">
+    <!-- Main menu toggle -->
+    <button type="button" id="main-menu-toggle"><i class="navbar-icon fa fa-bars icon"></i><span class="hide-menu-text">HIDE MENU</span></button>
+    <div class="navbar-inner">
+        <!-- Main navbar header -->
+        <div class="navbar-header">
+            <a href="{% url 'disk:index' %}" class="navbar-brand">
+                <div><img alt="Pixel Admin" src="assets/images/ypan/main-logo.png"></div>
+                Hengtian Yunpan 
+            </a>
+        </div>
+
+        <div id="main-navbar-collapse" class="collapse navbar-collapse main-navbar-collapse">
+            <div>
+                <div class="right clearfix">
+                    <ul class="nav navbar-nav pull-right right-navbar-nav">
+                        <li>
+                            <form class="navbar-form pull-left">
+                                <input type="text" class="form-control" placeholder="Search">
+                            </form>
+                        </li>
+                        {% if user.is_authenticated %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle user-menu" data-toggle="dropdown">
+                                <span>{{user.username}}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#"><i class="dropdown-icon fa fa-cog"></i>&nbsp;&nbsp;Settings</a></li>
+                                <li class="divider"></li>
+                                <li><a href="{% url 'disk:signout' %}"><i class="dropdown-icon fa fa-power-off"></i>&nbsp;&nbsp;Login Out</a></li>
+                        {% else %}
+                        <li><a href="{% url 'disk:signin' %}">登录</li>
+                        {% endif %}
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

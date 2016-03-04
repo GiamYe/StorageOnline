@@ -1,0 +1,29 @@
+<div id="main-menu" role="navigation">
+  <div id="main-menu-inner">
+    <div class="menu-content top" id="menu-content-demo">
+      <div>
+        <div class="text-bg"><span class="text-slim">欢迎,</span> <span class="text-semibold">{{user.username}}</span></div>
+        <div class="btn-group">
+          <a href="#" class="btn btn-xs btn-primary btn-outline dark"><i class="fa fa-cog"></i></a>
+          <a href="#" class="btn btn-xs btn-danger btn-outline dark"><i class="fa fa-power-off"></i></a>
+        </div>
+      </div>
+    </div>
+    <ul class="navigation">
+      <li>
+        <a href="{% url 'disk:index' %}"><i class="menu-icon fa fa-file-text"></i><span class="mm-text">文件</span></a>
+      </li>
+      <li>
+        <a href="{% url 'disk:next' '/shared' %}"><i class="menu-icon fa fa-share-alt"></i><span class="mm-text">接收的分享</span></a>
+      </li>
+      <li>
+        <a href="{% url 'disk:trash' %}"><i class="menu-icon fa fa-trash"></i><span class="mm-text">回收站</span></a>
+      </li>
+      {% if user.is_admin %}
+      <li>
+        <a href="{% url 'disk:users' %}"><i class="menu-icon fa fa-users"></i><span class="mm-text">用户管理</span></a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</div>

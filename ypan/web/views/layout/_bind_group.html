@@ -1,0 +1,88 @@
+                <!-- .modal -->
+                <div id="groupmodal" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title" id="myModalLabel">添加到组</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="panel-body" style="overflow:scroll;height:400px">
+                                    <table id="grouptable" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>组名</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr id="grouprow">
+                                                <td>
+                                                <div class="checkbox" style="margin: 0;">
+                                                    <label>
+                                                <input type="checkbox" value="" class="px">
+                                                <span id="name" class="lbl"></span>
+                                                    </label>
+                                                </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> <!-- / .modal-body -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button id="btn_bind_group" class="btn btn-primary">添加到组</button>
+                            </div>
+                        </div> <!-- / .modal-content -->
+                    </div> <!-- / .modal-dialog -->
+                </div> <!-- /.modal -->
+
+<script type="text/javascript" charset="utf-8">
+var uid;
+$(document).on("click", ".bindgroup", function(){
+    console.log("come in");
+    uid = $(this).parent().parent().parent().parent().parent().find("td:eq(0)").html();
+    console.log(uid);
+    $.ajax({
+        url:"/grouplist/",
+        type: "GET",
+        dataType: "json",
+        data: {},
+        success: function(result){
+            console.log(result);
+            arr = eval(result);
+
+            $.each(result, function(i, group){
+                var row = $("#grouprow").clone();
+                console.log(group.name)
+                row.find("#id").text(group.id);
+                row.find("#name").text(group.name);
+                row.find("input").val(group.id);
+                row.attr("id","ready");
+                row.appendTo("#grouptable");
+            });
+            $("#grouprow").remove();
+        }
+    });
+});
+
+$(document).on("click", "#btn_bind_group", function(){
+    var ids = "";
+    var i=0;
+    $("input:checked").each(function(){
+        ids = ids + $(this).val()+",";
+    });
+    console.log(ids)
+    $.ajax({
+        url: "/bindgroup/",
+        type: "POST",
+        dataType: "json",
+        data: {"user_id":uid, "group_ids":ids},
+        success: function(result){
+            $("#groupmodal").modal('hide');
+        }
+    });
+});
+
+
+</script>

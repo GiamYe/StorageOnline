@@ -1,0 +1,41 @@
+        {% include "layout/_bind_group.html" %}
+    <div style="overflow:scroll;height:500px">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>用户名</th>
+                    <th>email</th>
+                    <th>所属组</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{user.id}}</td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.email}}</td>
+                    <td>
+                        <div class="col-md-6">
+                            <select id="uidemo-modals-effects-select" class="form-control">
+                                {% for g in user.groups %}
+                                <option value="bounce">{{g}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-xs btn-success dropdown-toggle" data-toggle="dropdown">Operation&nbsp;<i class="fa fa-caret-down"></i></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" class="bindgroup" data-toggle="modal" data-target="#groupmodal">绑定组</a></li>
+                                <li><a href="{% url 'disk:deleteUser' user.id %}">删除</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>

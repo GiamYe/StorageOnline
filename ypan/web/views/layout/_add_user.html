@@ -1,0 +1,89 @@
+                <!-- .modal -->
+                <div id="usermodal" class="modal fade" tabindex="-1" role="dialog" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title" id="myModalLabel">添加到组</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="panel-body" style="overflow:scroll;height:400px">
+                                    <table id="usertable" class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>用户名</th>
+                                                <th>email</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr id="userrow">
+                                                <td>
+                                                <div class="checkbox" style="margin: 0;">
+                                                    <label>
+                                                <input type="checkbox" value="" class="px">
+                                                <span id="name" class="lbl"></span>
+                                                    </label>
+                                                </div>
+                                                </td>
+                                                <td id="email"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> <!-- / .modal-body -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button id="btn_add_user" class="btn btn-primary">添加到组</button>
+                            </div>
+                        </div> <!-- / .modal-content -->
+                    </div> <!-- / .modal-dialog -->
+                </div> <!-- /.modal -->
+
+<script type="text/javascript" charset="utf-8">
+var gid;
+$(document).on("click", ".adduser", function(){
+    console.log("come in");
+    gid = $(this).parent().parent().parent().parent().parent().find("td:eq(0)").html();
+    console.log(gid);
+    $.ajax({
+        url:"/userlist/",
+        type: "GET",
+        dataType: "json",
+        data: {},
+        success: function(result){
+            arr = eval(result);
+
+            $.each(result, function(i, user){
+                var row = $("#userrow").clone();
+                console.log(user.name)
+                row.find("#name").text(user.name);
+                row.find("#email").text(user.email);
+                row.find("input").val(user.id);
+                row.attr("id","ready");
+                row.appendTo("#usertable");
+            });
+            $("#userrow").remove();
+        }
+    });
+});
+
+$(document).on("click", "#btn_add_user", function(){
+    var ids = "";
+    var i=0;
+    $("input:checked").each(function(){
+        ids = ids + $(this).val()+",";
+    });
+    console.log(ids)
+    $.ajax({
+        url: "/adduser/",
+        type: "POST",
+        dataType: "json",
+        data: {"user_ids":ids, "group_id":gid},
+        success: function(result){
+            $("#usermodal").modal('hide');
+        }
+    });
+});
+
+
+</script>

@@ -1,0 +1,54 @@
+{% extends 'layout/layout.html' %}
+{% block title %}回收站{% endblock %}
+
+{% block breadcrumb %}
+<li><a href="#" class="active">回收站</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!--
+    <div class="col-md-3 col-sm-6">
+    </div>
+    -->
+    {% if user.is_superuser %}
+      <div class="col-md-4 col-sm-6">
+      </div>
+      <div class="col-md-4 col-sm-6">
+      </div>
+      <div class="col-md-4 col-sm-6">
+      </div>
+    {% else %}
+      {% if perms.admin.can_manage_user %}
+        <div class="col-md-3 col-sm-6">
+        </div>
+        <div class="col-md-3 col-sm-6">
+        </div>
+        <div class="col-md-3 col-sm-6">
+        </div>
+        <div class="col-md-3 col-sm-6">
+        </div>
+      {% else %}
+        <div class="col-md-4 col-sm-6">
+        </div>
+        <div class="col-md-4 col-sm-6">
+        </div>
+        <div class="col-md-4 col-sm-6">
+        </div>
+      {% endif %}
+    {% endif %}
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+    {% include "layout/_trash_header.html" %}
+    {% include "layout/_trash_table.html" %}
+    </div>
+    <!--
+    <div class="col-md-6">
+    </div>
+    -->
+    <div class="col-md-6">
+    </div>
+</div>
+{% endblock %}

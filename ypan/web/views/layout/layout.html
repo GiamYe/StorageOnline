@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!--[if IE 8]>         <html class="ie8"> <![endif]-->
+<!--[if IE 9]>         <html class="ie9 gt-ie8"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="gt-ie8 gt-ie9 not-ie"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" type="image/ico" href="{{STATIC_URL}}assets/images/ypan.ico">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+
+	<!-- Pixel Admin's stylesheets -->
+	<link href="{{STATIC_URL}}assets/stylesheets/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="{{STATIC_URL}}assets/stylesheets/pixel-admin.min.css" rel="stylesheet" type="text/css">
+	<link href="{{STATIC_URL}}assets/stylesheets/widgets.min.css" rel="stylesheet" type="text/css">
+	<link href="{{STATIC_URL}}assets/stylesheets/rtl.min.css" rel="stylesheet" type="text/css">
+    <link href="{{STATIC_URL}}assets/stylesheets/themes.min.css" rel="stylesheet" type="text/css">
+    <link href="{{STATIC_URL}}assets/stylesheets/ypan.min.css" rel="stylesheet" type="text/css">
+    <script src="{{STATIC_URL}}assets/javascripts/jquery.min.js"></script>
+    {% block page-style %}{% endblock %}
+
+	<!--[if lt IE 9]>
+		<script src="{{STATIC_URL}}assets/javascripts/ie.js"></script>
+	<![endif]-->
+</head>
+
+{% block body %}
+<body class="theme-default main-menu-animated">
+    <script>var init = [];</script>
+    {% block main-wrapper %}
+    <div id="main-wrapper">
+    <!-- MAIN_NAVIGATION -->
+        {% block header %}
+            {% include "layout/_header.html" %}
+        {% endblock %}
+    <!-- / $END_MAIN_NAVIGATION -->
+
+    <!-- $MAIN_MENU -->
+        {% block side-menu %}
+            {% include "layout/_side_menu.html" %}
+        {% endblock %}
+    <!-- / $END_MAIN_MENU -->
+
+        {% block content-wrapper %}
+    	<div id="content-wrapper">
+
+            <ul class="breadcrumb breadcrumb-page">
+                <div class="breadcrumb-label text-light-gray">您的位置:</div>
+                {% block breadcrumb %}
+                <li><a href="#">Home</a></li>
+                <li class="active"><a href="#">Dashboard</a></li>
+                {% endblock %}
+            </ul>
+            
+            {% block content %}{% endblock %}
+    	</div> <!-- / #content-wrapper -->
+        <div id="main-menu-bg">
+            <div class="copyright-version text-center"> </div>
+        </div>
+        {% endblock %}
+    </div> <!-- / #main-wrapper -->
+    {% endblock %}
+
+    {% block end-body%}
+    {% endblock %}
+
+    <!-- Pixel Admin's javascripts -->
+    <script src="{{STATIC_URL}}assets/javascripts/bootstrap.min.js"></script>
+    <script src="{{STATIC_URL}}assets/javascripts/pixel-admin.min.js"></script>
+    <script src="{{STATIC_URL}}assets/javascripts/settings.min.js"></script>
+
+    <script type="text/javascript">
+    	init.push(function () {
+    		// Javascript code here
+            //显示左页脚下版本
+            var isSHOWVersion = $('body').hasClass('mmc');
+            if(isSHOWVersion){
+                $('.copyright-version').css({
+                    'opacity':0
+                });
+            }else{
+                $('.copyright-version').css({
+                    'opacity':0.6
+                });
+            }
+            $('#main-menu-toggle').on('click',this,function(){
+                    var isSHOW = $('body').hasClass('mmc');
+                    if(isSHOW){
+                        $('.copyright-version').css({
+                            'opacity':0
+                        });
+                    }else{
+                        $('.copyright-version').css({
+                            'opacity':0.6
+                        });
+                    }
+                });
+
+            $(window).resize(function(){
+                if($(window).outerWidth() < 768){
+                    $('.copyright-version').hide();
+                }else{
+                    $('.copyright-version').show();
+                }
+            }).end();
+    	})
+    	window.PixelAdmin.start(init);
+    </script>
+
+    {% block script %}
+    {% endblock %}
+
+</body>
+{% endblock %}
+</html>

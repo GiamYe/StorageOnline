@@ -1,0 +1,53 @@
+{% extends 'layout/layout.html' %}
+{% block title %}用户管理{% endblock %}
+
+{% block breadcrumb %}
+<li><a href="#" class="active">用户管理</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!--
+    <div class="col-md-3 col-sm-6">
+    </div>
+    -->
+    {% if user.is_superuser %}
+      <div class="col-md-4 col-sm-6">
+      </div>
+      <div class="col-md-4 col-sm-6">
+      </div>
+      <div class="col-md-4 col-sm-6">
+      </div>
+    {% else %}
+      {% if perms.admin.can_manage_user %}
+        <div class="col-md-3 col-sm-6">
+        </div>
+        <div class="col-md-3 col-sm-6">
+        </div>
+        <div class="col-md-3 col-sm-6">
+        </div>
+        <div class="col-md-3 col-sm-6">
+        </div>
+      {% else %}
+        <div class="col-md-4 col-sm-6">
+        </div>
+        <div class="col-md-4 col-sm-6">
+        </div>
+        <div class="col-md-4 col-sm-6">
+        </div>
+      {% endif %}
+    {% endif %}
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+    {% include "layout/_users_tab.html" %}
+    </div>
+    <!--
+    <div class="col-md-6">
+    </div>
+    -->
+    <div class="col-md-6">
+    </div>
+</div>
+{% endblock %}
